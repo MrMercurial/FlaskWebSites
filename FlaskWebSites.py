@@ -1,7 +1,9 @@
 import sqlite3
-from flask import Flask,request,g,session,redirect,url_for
+from flask import Flask,request,g,session,redirect,url_for,render_template
+from flask.ext.bootstrap import Bootstrap
 
 app=Flask(__name__)
+bootstrap=Bootstrap(app)
 
 @app.route('/')
 def index():
@@ -10,7 +12,7 @@ def index():
 
 @app.route('/user/<username>')
 def Hello_User(username):
-    return 'Hello %s'%username
+    return render_template('user.html',name=username)
 
 if __name__ =="__main__":
-    app.run(debug=True)
+    app.run()
