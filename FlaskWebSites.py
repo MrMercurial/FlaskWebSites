@@ -9,9 +9,12 @@ basedir=os.path.abspath(os.path.dirname(__file__))
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
-conn=sqlite3.connect(os.path.join(basedir,'data.db'))
-conn.execute("""create table if not exists articles(id INTEGER primary KEY autoincrement,title VARCHAR (128),article VARCHAR (512))""")
+DATABASE=os.path.join(basedir,'data.db')
 
+
+
+def connect_db():
+    return sqlite3.connect(DATABASE)
 # db=SQLAlchemy(app)
 
 # class Role(db.Model):
@@ -34,6 +37,21 @@ conn.execute("""create table if not exists articles(id INTEGER primary KEY autoi
 
 # bootstrap=Bootstrap(app)
 
+@app.before_first_request
+def create_db():
+    g.db=connect_db()
+    g.db.execute(
+        """create table if not exists articles(id INTEGER primary KEY autoincrement,title VARCHAR (128),article VARCHAR (512))""")
+    g.db.commit()
+@app.before_request
+def before_request():
+    g.db=connect_db()
+
+@app.teardown_request
+def teardown_request(exception):
+    if hasattr(g, 'db'):
+        g.db.close()
+
 @app.route('/')
 def index():
     useragent=request.headers.get('User-Agent')
@@ -46,14 +64,16 @@ def Hello_User(username):
 @app.route('/api/aa',methods=['GET','POST'])
 def submit_user():
     if request.method=='POST':
-        title=request.form.get('inputname',119)
+        title=request.form.get('username',119)
         # artilces=['diyibiasnfweo','sdafew']
-        article=request.form.get('txt')
+        article=request.form.get('txt',200)
+        print title
+        print article
         # print inputname
-        conn.execute('''INSERT INTO articles(title,article) VALUES (title,article)''')
-        conn.commit()
+        g.db.execute("INSERT INTO articles(title,article) VALUES ('sd','csdw')")
+        # g.db.commit()
 
-        cur = conn.cursor()
+        cur = g.db.cursor()
         # 用游标来查询就可以获取到结果
         cur.execute("select * from articles")
         # 获取所有结果
