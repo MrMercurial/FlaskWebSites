@@ -69,16 +69,33 @@ def submit_user():
         article=request.form.get('txt',200)
         print title
         print article
-        # print inputname
-        g.db.execute("INSERT INTO articles(title,article) VALUES ('sd','csdw')")
-        # g.db.commit()
 
-        cur = g.db.cursor()
+        with sqlite3.connect(DATABASE) as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO articles(title,article) VALUES (?,?)",(title,article) )
+
+            con.commit()
+            msg = "Record successfully added"
+
+
+
+
+
+
+
+
+        ############################################3
+        # print inputname
+        # g.db.execute("INSERT INTO articles(title,article) VALUES (?,?)",(title,article))
+        # # g.db.commit()
+        #
+        # cur = g.db.cursor()
         # 用游标来查询就可以获取到结果
         cur.execute("select * from articles")
         # 获取所有结果
         res = cur.fetchall()
         return render_template('index.html',articles=res)
+        con.close()
 
 if __name__ =="__main__":
     app.run(debug=True)
