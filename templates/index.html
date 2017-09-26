@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Welcome to Flask</title>
 </head>
-<input>
     <h1>Hello {{name}}</h1>
 
-<textarea id="input">{{article}}</textarea><br>
-    asdaf:<input type="text" name="fad">
-    <input type="submit" value="sdfasdf">
-<button>提交</button>
+<form action="/api/aa" method="post">
+    <input type="text" name="username">
+    <input type="submit" name="ti" value="提交">
+</form><br>
+
+<h1>Hello {{inputname}}</h1>
+
+
 </body>
 </html>

@@ -1,8 +1,8 @@
 #encoding=utf-8
 import sqlite3,os
 from flask import Flask,request,g,session,redirect,url_for,render_template
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.sqlalchemy import SQLAlchemy
+# from flask.ext.bootstrap import Bootstrap
+# from flask.ext.sqlalchemy import SQLAlchemy
 
 basedir=os.path.abspath(os.path.dirname(__file__))
 
@@ -10,7 +10,7 @@ app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
-db=SQLAlchemy(app)
+# db=SQLAlchemy(app)
 
 # class Role(db.Model):
 #     __tablename__='roles'
@@ -30,7 +30,7 @@ db=SQLAlchemy(app)
 #     def __repr__(self):
 #         return '<User %r>'%self.username
 
-bootstrap=Bootstrap(app)
+# bootstrap=Bootstrap(app)
 
 @app.route('/')
 def index():
@@ -41,5 +41,12 @@ def index():
 def Hello_User(username):
     return render_template('index.html',name=username)
 
+@app.route('/api/aa',methods=['GET','POST'])
+def submit_user():
+    if request.method=='POST':
+        inputname=request.form.get('username',119)
+        print inputname
+        return render_template('index.html',inputname=inputname)
+
 if __name__ =="__main__":
-    app.run()
+    app.run(debug=True)
