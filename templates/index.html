@@ -5,9 +5,16 @@
     <title>Welcome to Flask</title>
 </head>
     <h1>Hello {{name}}</h1>
+<body>
+<ul>
+    {%for article in articles%}
+        <p>{{article}}</p>
+    {%endfor%}
+</ul>
 
 <form action="/api/aa" method="post">
-    <input type="text" name="username">
+    标题：<input type="text" name="username"><br>
+    内容：<textarea id="12" name="txt"></textarea><br>
     <input type="submit" name="ti" value="提交">
 </form><br>
 

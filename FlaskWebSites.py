@@ -9,6 +9,8 @@ basedir=os.path.abspath(os.path.dirname(__file__))
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
+conn=sqlite3.connect(os.path.join(basedir,'data.db'))
+conn.execute("""create table if not exists articles(id INTEGER primary KEY autoincrement,title VARCHAR (128),article VARCHAR (512))""")
 
 # db=SQLAlchemy(app)
 
@@ -44,9 +46,19 @@ def Hello_User(username):
 @app.route('/api/aa',methods=['GET','POST'])
 def submit_user():
     if request.method=='POST':
-        inputname=request.form.get('username',119)
-        print inputname
-        return render_template('index.html',inputname=inputname)
+        title=request.form.get('inputname',119)
+        # artilces=['diyibiasnfweo','sdafew']
+        article=request.form.get('txt')
+        # print inputname
+        conn.execute('''INSERT INTO articles(title,article) VALUES (title,article)''')
+        conn.commit()
+
+        cur = conn.cursor()
+        # 用游标来查询就可以获取到结果
+        cur.execute("select * from articles")
+        # 获取所有结果
+        res = cur.fetchall()
+        return render_template('index.html',articles=res)
 
 if __name__ =="__main__":
     app.run(debug=True)
