@@ -1,6 +1,11 @@
 #encoding=utf-8
 import sqlite3,os
 from flask import Flask,request,g,session,redirect,url_for,render_template
+import sys
+default_encoding = 'utf-8'
+if sys.getdefaultencoding() != default_encoding:
+    reload(sys)
+    sys.setdefaultencoding(default_encoding)
 # from flask.ext.bootstrap import Bootstrap
 # from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -70,26 +75,20 @@ def submit_user():
         print title
         print article
 
-        with sqlite3.connect(DATABASE) as con:
-            cur = con.cursor()
-            cur.execute("INSERT INTO articles(title,article) VALUES (?,?)",(title,article) )
-
-            con.commit()
-            msg = "Record successfully added"
-
-
-
-
-
-
+        # with sqlite3.connect(DATABASE) as con:
+        #     cur = con.cursor()
+        #     cur.execute("INSERT INTO articles(id,title,article) VALUES (?,?,?)",(1,title,article) )
+        #
+        #     con.commit()
+        #     msg = "Record successfully added"
 
 
         ############################################3
         # print inputname
-        # g.db.execute("INSERT INTO articles(title,article) VALUES (?,?)",(title,article))
-        # # g.db.commit()
-        #
-        # cur = g.db.cursor()
+        g.db.execute("INSERT INTO articles(title,article) VALUES (?,?)",(title,article))
+        g.db.commit()
+
+        cur = g.db.cursor()
         # 用游标来查询就可以获取到结果
         cur.execute("select * from articles")
         # 获取所有结果
