@@ -101,6 +101,7 @@ def facecompare():
     if request.method=="POST":
         print "-----------begin--------"
         print request.form
+        return "ok"
 @app.route('/face')
 def face():
     return render_template('face.html')

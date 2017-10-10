@@ -49,15 +49,18 @@
     }
     var reader = new FileReader();
     reader.readAsDataURL(file);
+        var formdata=new FormData();
     reader.onload = function(e){
         inputhandle.innerHTML = '<img src="'+this.result+'" alt="" style="width: 100%;height: 100%"/ >';
         image1_base64=e.target.result;
-        faceresult.innerHTML=image1_base64
+        formdata.append('base64',e.target.result);
+        faceresult.innerHTML=image1_base64;
+//        alert(typeof formdata)
     }
         var xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("POST",'/api/facecompare',true)
-        xmlhttp.setRequestHeader("Content-type","application/json;charset=UTF-8")
-        xmlhttp.send(image1_base64)
+        xmlhttp.open("POST",'/api/facecompare',false)
+//        xmlhttp.setRequestHeader("Content-type","application/json;charset=UTF-8")
+        xmlhttp.send(formdata)
 }
 
 </script>
