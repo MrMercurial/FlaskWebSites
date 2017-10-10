@@ -96,5 +96,14 @@ def submit_user():
         return render_template('index.html',articles=res)
         con.close()
 
+@app.route('/api/facecompare',methods=['POST'])
+def facecompare():
+    if request.method=="POST":
+        print "-----------begin--------"
+        print request.form
+@app.route('/face')
+def face():
+    return render_template('face.html')
+
 if __name__ =="__main__":
     app.run(debug=True)
