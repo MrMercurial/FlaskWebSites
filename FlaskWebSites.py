@@ -1,5 +1,5 @@
 #encoding=utf-8
-import sqlite3,os
+import sqlite3,os,base64
 from flask import Flask,request,g,session,redirect,url_for,render_template
 import sys
 default_encoding = 'utf-8'
@@ -100,8 +100,12 @@ def submit_user():
 def facecompare():
     if request.method=="POST":
         print "-----------begin--------"
-        print request.form
-        return "ok"
+        print request.headers
+        # print request.get_json()['file'].split(',')[1]
+        # print request.form.get('base64')
+        # print request.files['inputimg']
+        # return render_template('face.html')
+        return "yes"
 @app.route('/face')
 def face():
     return render_template('face.html')
